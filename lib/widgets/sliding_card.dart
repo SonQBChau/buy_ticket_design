@@ -6,12 +6,14 @@ class SlidingCard extends StatelessWidget {
   final String name; //<-- title of the event
   final String date; //<-- date of the event
   final String assetName; //<-- name of the image to be displayed
+  final double offset;             //<-- How far is page from being displayed
 
   const SlidingCard({
     Key key,
     @required this.name,
     @required this.date,
     @required this.assetName,
+    @required this.offset,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class SlidingCard extends StatelessWidget {
             child: Image.asset( //<-- main image
               'assets/$assetName',
               height: MediaQuery.of(context).size.height * 0.3,
+              alignment: Alignment(-offset.abs(), 0),         //<-- Set the alignment
               fit: BoxFit.none,
             ),
           ),
