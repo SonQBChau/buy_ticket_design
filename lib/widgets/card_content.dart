@@ -14,7 +14,7 @@ class CardContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(name, style: TextStyle(fontSize: 20)),
+          Text(name, style: TextStyle(fontSize: 18)),
           SizedBox(height: 8),
           Text(date, style: TextStyle(color: Colors.grey)),
           Spacer(),
