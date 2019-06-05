@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:math' as math;
 import 'package:buy_ticket_design/models/event.dart';
+import 'package:buy_ticket_design/widgets/expanded_event_item.dart';
 import 'package:buy_ticket_design/widgets/menu_button.dart';
 import 'package:buy_ticket_design/widgets/sheet_header.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,8 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
   double get headerFontSize => lerp(14, 24);
   double get itemBorderRadius => lerp(8, 24); //<-- increase item border radius
   double get iconSize => lerp(iconStartSize, iconEndSize); //<-- increase icon size
+  double get iconLeftBorderRadius => itemBorderRadius; //<-- Left border radius stays the same
+  double get iconRightBorderRadius => lerp(8, 0); //<-- Right border radius lerps to 0 instead.
 
   double iconTopMargin(int index) =>
       lerp(iconStartMarginTop,
@@ -87,8 +90,8 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
       left: iconLeftMargin(index), //<-- Specify icon's left margin
       child: ClipRRect(
         borderRadius: BorderRadius.horizontal(
-          left: Radius.circular(itemBorderRadius), //<-- Set the rounded corners
-          right: Radius.circular(itemBorderRadius),
+          left: Radius.circular(iconLeftBorderRadius),  //<-- update border radius
+          right: Radius.circular(iconRightBorderRadius), //<-- update border radius
         ),
         child: Image.asset(
           'assets/${event.assetName}',
@@ -96,6 +99,19 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
           alignment: Alignment(lerp(1, 0), 0), //<-- Play with alignment for extra style points
         ),
       ),
+    );
+  }
+
+  Widget _buildFullItem(Event event) {
+    int index = events.indexOf(event);
+    return ExpandedEventItem(
+      topMargin: iconTopMargin(index), //<--provide margins and height same as for icon
+      leftMargin: iconLeftMargin(index),
+      height: iconSize,
+      isVisible: _controller.status == AnimationStatus.completed, //<--set visibility
+      borderRadius: itemBorderRadius, //<-- pass border radius
+      title: event.title, //<-- data to be displayed
+      date: event.date, //<-- data to be displayed
     );
   }
 
@@ -129,6 +145,7 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
                     fontSize: headerFontSize,
                     topMargin: headerTopMargin,
                   ),
+                  for (Event event in events) _buildFullItem(event), //<-- Add FullItems
                   for (Event event in events) _buildIcon(event), //<-- Add icons to the stack
                 ],
               ),
