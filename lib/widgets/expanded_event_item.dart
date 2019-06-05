@@ -29,7 +29,7 @@ class ExpandedEventItem extends StatelessWidget {
       height: height,
       child: AnimatedOpacity(
         opacity: isVisible ? 1 : 0,
-        duration: Duration(milliseconds: 200),
+        duration: isVisible ? Duration(milliseconds: 200) : Duration(milliseconds: 0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
