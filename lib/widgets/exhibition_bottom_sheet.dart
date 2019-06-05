@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:math' as math;
+import 'package:buy_ticket_design/widgets/menu_button.dart';
 import 'package:flutter/material.dart';
 
 const double minHeight = 120;
@@ -79,6 +80,11 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
               decoration: const BoxDecoration(
                 color: Color(0xFF162A49),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+              ),
+              child: Stack(           //<-- Add a stack
+                children: <Widget>[
+                  MenuButton(),       //<-- With a menu button
+                ],
               ),
             ),
           ),
