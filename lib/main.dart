@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/home_page.dart';
 
+// https://marcinszalek.pl/flutter/tickets-challenge-parallax/
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
