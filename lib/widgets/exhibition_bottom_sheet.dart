@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:math' as math;
 import 'package:buy_ticket_design/widgets/menu_button.dart';
+import 'package:buy_ticket_design/widgets/sheet_header.dart';
 import 'package:flutter/material.dart';
 
 const double minHeight = 120;
@@ -14,6 +15,8 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
   AnimationController _controller;
 
   double get maxHeight => MediaQuery.of(context).size.height;
+  double get headerTopMargin => lerp(20, 20 + MediaQuery.of(context).padding.top); //<-- Add new property
+  double get headerFontSize => lerp(14, 24);
 
   @override
   void initState() {
@@ -84,6 +87,10 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
               child: Stack(           //<-- Add a stack
                 children: <Widget>[
                   MenuButton(),       //<-- With a menu button
+                  SheetHeader(                //<-- Add a header with params
+                    fontSize: headerFontSize,
+                    topMargin: headerTopMargin,
+                  ),
                 ],
               ),
             ),
