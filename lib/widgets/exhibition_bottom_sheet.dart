@@ -1,10 +1,17 @@
 import 'dart:ui';
 import 'dart:math' as math;
+import 'package:buy_ticket_design/models/event.dart';
 import 'package:buy_ticket_design/widgets/menu_button.dart';
 import 'package:buy_ticket_design/widgets/sheet_header.dart';
 import 'package:flutter/material.dart';
 
 const double minHeight = 120;
+const double iconStartSize = 44;  //<-- add edge values
+const double iconEndSize = 120;  //<-- add edge values
+const double iconStartMarginTop = 36;  //<-- add edge values
+const double iconEndMarginTop = 80;  //<-- add edge values
+const double iconsVerticalSpacing = 24;  //<-- add edge values
+const double iconsHorizontalSpacing = 16;  //<-- add edge values
 
 class ExhibitionBottomSheet extends StatefulWidget {
   @override
@@ -17,6 +24,16 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
   double get maxHeight => MediaQuery.of(context).size.height;
   double get headerTopMargin => lerp(20, 20 + MediaQuery.of(context).padding.top); //<-- Add new property
   double get headerFontSize => lerp(14, 24);
+  double get itemBorderRadius => lerp(8, 24); //<-- increase item border radius
+  double get iconSize => lerp(iconStartSize, iconEndSize); //<-- increase icon size
+
+  double iconTopMargin(int index) =>
+      lerp(iconStartMarginTop,
+          iconEndMarginTop + index * (iconsVerticalSpacing + iconEndSize)) +
+          headerTopMargin; //<-- calculate top margin based on header margin, and size of all of icons above (from small to big)
+
+  double iconLeftMargin(int index) =>
+      lerp(index * (iconsHorizontalSpacing + iconStartSize), 0); //<-- calculate left margin (from big to small)
 
   @override
   void initState() {
@@ -61,6 +78,27 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
           velocity: _controller.value < 0.5 ? -2.0 : 2.0); //<-- or just continue to whichever edge is closer
   }
 
+  Widget _buildIcon(Event event) {
+    int index = events.indexOf(event); //<-- Get index of the event
+    return Positioned(
+      height: iconSize, //<-- Specify icon's size
+      width: iconSize, //<-- Specify icon's size
+      top: iconTopMargin(index), //<-- Specify icon's top margin
+      left: iconLeftMargin(index), //<-- Specify icon's left margin
+      child: ClipRRect(
+        borderRadius: BorderRadius.horizontal(
+          left: Radius.circular(itemBorderRadius), //<-- Set the rounded corners
+          right: Radius.circular(itemBorderRadius),
+        ),
+        child: Image.asset(
+          'assets/${event.assetName}',
+          fit: BoxFit.cover,
+          alignment: Alignment(lerp(1, 0), 0), //<-- Play with alignment for extra style points
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -91,6 +129,7 @@ class _ExhibitionBottomSheetState extends State<ExhibitionBottomSheet> with Sing
                     fontSize: headerFontSize,
                     topMargin: headerTopMargin,
                   ),
+                  for (Event event in events) _buildIcon(event), //<-- Add icons to the stack
                 ],
               ),
             ),
